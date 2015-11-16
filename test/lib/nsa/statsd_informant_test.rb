@@ -1,6 +1,6 @@
 require_relative "../../test_helper"
 
-class ::NSA::StatsdInformantTest < ::MiniTest::Unit::TestCase
+class ::NSA::StatsdInformantTest < ::Minitest::Test
 
   def test_collect_action_controller
     collector = mock

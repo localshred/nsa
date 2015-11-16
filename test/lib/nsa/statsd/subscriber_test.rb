@@ -1,6 +1,6 @@
 require_relative "../../../test_helper"
 
-class SubscriberTest < ::MiniTest::Unit::TestCase
+class SubscriberTest < ::Minitest::Test
 
   InformantTest = Class.new do
     include ::NSA::Statsd::Subscriber

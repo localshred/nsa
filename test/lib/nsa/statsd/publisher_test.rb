@@ -1,6 +1,6 @@
 require_relative "../../../test_helper"
 
-class PublisherTest < ::MiniTest::Unit::TestCase
+class PublisherTest < ::Minitest::Test
 
   CollectorTest = Class.new do
     include ::NSA::Statsd::Publisher
