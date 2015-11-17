@@ -20,7 +20,7 @@ class SubscriberTest < ::Minitest::Test
 
   def setup
     @informant = InformantTest.new
-    @backend = mock
+    @backend = ::Statsd.new
   end
 
   def test_statsd_subscribe

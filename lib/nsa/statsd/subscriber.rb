@@ -4,8 +4,12 @@ module NSA
   module Statsd
     module Subscriber
 
+      EXPECTED_RESPONDABLE_METHODS = %i( count decrement gauge increment set time timing ).freeze
+
       def statsd_subscribe(backend)
-        fail "Backend must be a Statsd object. Got '#{backend.class.name}' instead." unless backend.is_a?(::String)
+        unless backend_valid?(backend)
+          fail "Backend must respond to the following methods:\n\t#{EXPECTED_RESPONDABLE_METHODS.join(", ")}"
+        end
 
         ::ActiveSupport::Notifications.subscribe(/.statsd$/) do |name, start, finish, id, payload|
           __send_event_to_statsd(backend, name, start, finish, id, payload)
@@ -25,6 +29,12 @@ module NSA
           backend.__send__(action, key_name, value, sample_rate, &block)
         when :increment, :decrement, :time then
           backend.__send__(action, key_name, sample_rate, &block)
+        end
+      end
+
+      def backend_valid?(backend)
+        EXPECTED_RESPONDABLE_METHODS.all? do |method_name|
+          backend.respond_to?(method_name)
         end
       end
 
