@@ -1,8 +1,12 @@
+require "statsd-ruby"
+
 module NSA
   module Statsd
     module Subscriber
 
       def statsd_subscribe(backend)
+        fail "Backend must be a Statsd object. Got '#{backend.class.name}' instead." unless backend.is_a?(::String)
+
         ::ActiveSupport::Notifications.subscribe(/.statsd$/) do |name, start, finish, id, payload|
           __send_event_to_statsd(backend, name, start, finish, id, payload)
         end
