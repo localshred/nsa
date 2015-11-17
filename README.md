@@ -3,6 +3,9 @@
 Listen to Rails `ActiveSupport::Notifications` and deliver to a [Statsd](https://github.com/reinh/statsd) backend.
 This gem also supports writing your own custom collectors.
 
+[![Gem Version](https://badge.fury.io/rb/nsa.svg)](https://badge.fury.io/rb/nsa)
+[![Build Status](https://travis-ci.org/localshred/nsa.svg)](https://travis-ci.org/localshred/nsa)
+
 ## Installation
 
 Add this line to your application's Gemfile:
