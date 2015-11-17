@@ -13,6 +13,8 @@ module NSA
         [ :delete, /^\s*DELETE.+FROM\s+"?([^".\s]+)"?/im ]
       ].freeze
 
+      EMPTY_MATCH_RESULT = []
+
       def self.collect(key_prefix)
         ::ActiveSupport::Notifications.subscribe("sql.active_record") do |_, start, finish, _id, payload|
           query_type, table_name = match_query(payload[:sql])
@@ -28,7 +30,7 @@ module NSA
         MATCHERS
           .lazy
           .map { |(type, regex)|
-            match = (sql.match(regex) || [])
+            match = (sql.match(regex) || EMPTY_MATCH_RESULT)
             [ type, match[1] ]
           }
           .detect { |(_, table_name)| ! table_name.nil? }
