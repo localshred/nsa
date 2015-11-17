@@ -110,8 +110,18 @@ Writing your own collector is very simple. To take advantage of the keyspace han
 
 1. Create an object/module which responds to `collect`, taking the `key_prefix` as its only argument.
 2. Include or extend your class/module with `NSA::Statsd::Publisher`.
+3. Call any of the `statsd_*` prefixed methods provided by the `Publisher`:
 
-For example:
++ `statsd_count(key, value = 1, sample_rate = nil)`
++ `statsd_decrement(key, sample_rate = nil)`
++ `statsd_gauge(key, value = 1, sample_rate = nil)`
++ `statsd_increment(key, sample_rate = nil)`
++ `statsd_set(key, value = 1, sample_rate = nil)`
++ `statsd_time(key, sample_rate = nil, &block)`
++ `statsd_timing(key, value = 1, sample_rate = nil)`
+
+For example, first define your collector. Our (very naive) example will write
+a gauge metric every 10 seconds of the User count in the db.
 
 ```ruby
 module UsersCollector
@@ -126,25 +136,17 @@ module UsersCollector
 end
 ```
 
-Then let the informant know about it:
+Then let the informant know about it in some initializer:
 
 ```ruby
+# file: config/initializers/statsd.rb
+
 # $statsd =
 NSA.inform_statsd($statsd) do |informant|
   # ...
   informant.collect(UserCollector, :users)
 end
 ```
-
-The `NSA::Statsd::Publisher` module exposes the following methods:
-
-+ `statsd_count(key, value = 1, sample_rate = nil)`
-+ `statsd_decrement(key, sample_rate = nil)`
-+ `statsd_gauge(key, value = 1, sample_rate = nil)`
-+ `statsd_increment(key, sample_rate = nil)`
-+ `statsd_set(key, value = 1, sample_rate = nil)`
-+ `statsd_time(key, sample_rate = nil, &block)`
-+ `statsd_timing(key, value = 1, sample_rate = nil)`
 
 ## Development
 
