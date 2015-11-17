@@ -29,6 +29,24 @@ class ActiveRecordTest < ::Minitest::Test
     ::NSA::Collectors::ActiveRecord.collect("db")
   end
 
+  def test_collect_select_query_multiline
+    duration = 0.3
+    query = %q{
+      SELECT
+        "users".id,
+        "users".name
+      FROM "users"
+      INNER JOIN (
+        SELECT * FROM accounts
+      )
+    }
+    event = { :sql => query }
+    expect_subscriber(event, duration)
+
+    ::NSA::Collectors::ActiveRecord.expects(:statsd_timing).with("db.tables.users.queries.select.duration", duration * 1000)
+    ::NSA::Collectors::ActiveRecord.collect("db")
+  end
+
   def test_collect_update_query
     duration = 0.4
     event = { :sql => %q{UPDATE "users" SET "users".name = 'Joe' WHERE "users".id = 1} }
