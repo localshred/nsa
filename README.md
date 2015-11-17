@@ -1,7 +1,7 @@
 # NSA (National Statsd Agency)
 
-Listen to your Rails ActiveSupport::Notifications and deliver to a Statsd backend.
-Support for writing your own custom collectors.
+Listen to Rails `ActiveSupport::Notifications` and deliver to a [Statsd](https://github.com/reinh/statsd) backend.
+This gem also supports writing your own custom collectors.
 
 ## Installation
 
@@ -47,7 +47,7 @@ end
 
 ### `:action_controller`
 
-Listens to: `process_action.action_controller
+Listens to: `process_action.action_controller`
 
 Metrics recorded:
 
