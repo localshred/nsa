@@ -4,7 +4,7 @@ class ::NSA::StatsdInformantTest < ::Minitest::Test
 
   def test_collect_action_controller
     collector = mock
-    collector.expects(:responds_to?).with(:collect).returns(true)
+    collector.expects(:respond_to?).with(:collect).returns(true)
     collector.expects(:collect).with("foo")
     ::NSA::StatsdInformant.collect(collector, "foo")
   end

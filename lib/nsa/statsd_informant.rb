@@ -18,7 +18,7 @@ module NSA
     }).freeze
 
     def self.collect(collector, key_prefix)
-      collector = COLLECTOR_TYPES[collector.to_sym] unless collector.responds_to?(:collect)
+      collector = COLLECTOR_TYPES[collector.to_sym] unless collector.respond_to?(:collect)
       collector.collect(key_prefix)
     end
 
