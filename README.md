@@ -109,8 +109,10 @@ Metrics recorded:
 Writing your own collector is very simple. To take advantage of the keyspace handling you must:
 
 1. Create an object/module which responds to `collect`, taking the `key_prefix` as its only argument.
-2. Include or extend your class/module with `NSA::Statsd::Publisher`.
-3. Call any of the `statsd_*` prefixed methods provided by the `Publisher`:
+2. Include or extend your class/module with `NSA::Statsd::Publisher` or `NSA::Statsd::Publisher`.
+3. Call any of the `statsd_*` prefixed methods provided by the included Publisher:
+
+__`Publisher` methods:__
 
 + `statsd_count(key, value = 1, sample_rate = nil)`
 + `statsd_decrement(key, sample_rate = nil)`
@@ -120,10 +122,23 @@ Writing your own collector is very simple. To take advantage of the keyspace han
 + `statsd_time(key, sample_rate = nil, &block)`
 + `statsd_timing(key, value = 1, sample_rate = nil)`
 
+__`AsyncPublisher` methods:__
+
++ `async_statsd_count(key, sample_rate = nil, &block)`
++ `async_statsd_gauge(key, sample_rate = nil, &block)`
++ `async_statsd_set(key, sample_rate = nil, &block)`
++ `async_statsd_time(key, sample_rate = nil, &block)`
++ `async_statsd_timing(key, sample_rate = nil, &block)`
+
+___Note:___ When using the `AsyncPublisher`, the value is derived from the block. This is useful
+when the value is not near at hand and has a relatively high cost to compute (e.g. db query)
+and you don't want your current thread to wait.
+
 For example, first define your collector. Our (very naive) example will write
 a gauge metric every 10 seconds of the User count in the db.
 
 ```ruby
+# Publishing User.count gauge using a collector
 module UsersCollector
   extend ::NSA::Statsd::Publisher
 
@@ -147,6 +162,30 @@ NSA.inform_statsd($statsd) do |informant|
   informant.collect(UserCollector, :users)
 end
 ```
+
+You could also implement the provided example not as a Collector, but using
+`AsyncPublisher` directly in your ActiveRecord model:
+
+```ruby
+# Publishing User.count gauge using AsyncPublisher methods
+class User <  ActiveRecord::Base
+  include NSA::Statsd::AsyncPublisher
+
+  after_commit :write_count_gauge, :on => [ :create, :destroy ]
+
+  # ...
+
+  private
+
+  def write_count_gauge
+    async_statsd_gauge("models.User.all.count") { ::User.count }
+  end
+
+end
+```
+
+Using this technique, publishing the `User.count` stat gauge will not hold up
+the thread responsible for creating the record (and processing more callbacks).
 
 ## Development
 
