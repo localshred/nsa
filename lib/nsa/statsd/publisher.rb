@@ -23,18 +23,20 @@ module NSA
       end
 
       def statsd_time(key, sample_rate = nil, &block)
-        __statsd_publish(:time, key, nil, sample_rate, &block)
+        start = Time.now
+        result = block.call unless block.nil?
+        statsd_timing(key, ((Time.now - start) * 1000).round, sample_rate)
+        result
       end
 
       def statsd_timing(key, value = 1, sample_rate = nil)
         __statsd_publish(:timing, key, value, sample_rate)
       end
 
-      def __statsd_publish(stat_type, key, value = nil, sample_rate = nil, &block)
+      def __statsd_publish(stat_type, key, value = nil, sample_rate = nil)
         payload = { :key => key }
         payload.merge!({ :value => value }) if value
         payload.merge!({ :sample_rate => sample_rate }) if sample_rate
-        payload.merge!({ :block => block }) if block_given?
 
         ::ActiveSupport::Notifications.instrument("#{stat_type}.statsd", payload)
       end
