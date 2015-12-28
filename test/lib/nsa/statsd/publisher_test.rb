@@ -54,10 +54,15 @@ class PublisherTest < ::Minitest::Test
   end
 
   def test_time
-    collector.expects(:__statsd_publish).with(:time, :foo, nil, 0.5)
-    collector.expects(:__statsd_publish).with(:time, :bar, nil, nil)
-    collector.statsd_time(:foo, 0.5)
-    collector.statsd_time(:bar)
+    collector.expects(:__statsd_publish).with(:timing, :foo, kind_of(Integer), 0.5)
+    collector.expects(:__statsd_publish).with(:timing, :bar, kind_of(Integer), nil)
+    collector.statsd_time(:foo, 0.5) { 1 }
+    collector.statsd_time(:bar) { 1 }
+  end
+
+  def test_time_return_value
+    result = collector.statsd_time(:foo) { 42 }
+    assert_equal(42, result)
   end
 
   def test_timing
@@ -84,16 +89,6 @@ class PublisherTest < ::Minitest::Test
     ::ActiveSupport::Notifications.expects(:instrument).with("count.statsd", { :key => :bar, :value => 23, :sample_rate => 0.5 })
     collector.__statsd_publish(:count, :foo, nil, 0.5)
     collector.__statsd_publish(:count, :bar, 23, 0.5)
-  end
-
-  def test___statsd_publish_with_block
-    block = -> { 1 }
-    ::ActiveSupport::Notifications.expects(:instrument).with("count.statsd", { :key => :foo, :sample_rate => 0.5, :block => block })
-    ::ActiveSupport::Notifications.expects(:instrument).with("count.statsd", { :key => :bar, :value => 87, :sample_rate => 0.5, :block => block })
-    ::ActiveSupport::Notifications.expects(:instrument).with("count.statsd", { :key => :baz, :block => block })
-    collector.__statsd_publish(:count, :foo, nil, 0.5, &block)
-    collector.__statsd_publish(:count, :bar, 87, 0.5, &block)
-    collector.__statsd_publish(:count, :baz, &block)
   end
 
 end
