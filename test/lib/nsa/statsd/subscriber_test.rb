@@ -15,8 +15,7 @@ class SubscriberTest < ::Minitest::Test
   KEY = :total_users
   VALUE = 321
   SAMPLE_RATE = 0.8
-  BLOCK = -> { 1 }
-  PAYLOAD = { :key => KEY, :value => VALUE, :sample_rate => SAMPLE_RATE, :block => BLOCK }
+  PAYLOAD = { :key => KEY, :value => VALUE, :sample_rate => SAMPLE_RATE }
 
   def setup
     @informant = InformantTest.new
@@ -43,10 +42,8 @@ class SubscriberTest < ::Minitest::Test
   def test_key_event_types
     backend.expects(:decrement).with(KEY, SAMPLE_RATE)
     backend.expects(:increment).with(KEY, SAMPLE_RATE)
-    backend.expects(:time).with(KEY, SAMPLE_RATE)
     informant.__send_event_to_statsd(backend, "decrement.statsd", START, FINISH, NOTIFICATION_ID, PAYLOAD)
     informant.__send_event_to_statsd(backend, "increment.statsd", START, FINISH, NOTIFICATION_ID, PAYLOAD)
-    informant.__send_event_to_statsd(backend, "time.statsd", START, FINISH, NOTIFICATION_ID, PAYLOAD)
   end
 
 
