@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Listen to your Rails ActiveSupport::Notifications and deliver to a Statsd backend.}
   spec.description   = spec.summary
-  spec.homepage      = "https://www.github.com/localshred/nsa"
+  spec.homepage      = "https://github.com/localshred/nsa"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
