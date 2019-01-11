@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activesupport", "< 6", ">= 4.2"
   spec.add_dependency "concurrent-ruby", "~> 1.0", ">= 1.0.2"
-  spec.add_dependency "sidekiq", "~> 3.5", ">= 3.5.0"
+  spec.add_dependency "sidekiq", ">= 3.5"
   spec.add_dependency "statsd-ruby", "~> 1.4", ">= 1.4.0"
 
   spec.add_development_dependency "bundler", "~> 1.10"
