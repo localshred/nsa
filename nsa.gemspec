@@ -9,9 +9,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ["BJ Neilsen"]
   spec.email         = ["bj.neilsen@gmail.com"]
 
-  spec.summary       = %q{Listen to your Rails ActiveSupport::Notifications and deliver to a Statsd backend.}
-  spec.description   = spec.summary
+  spec.summary       = %q{Publish Rails application metrics to statsd}
+  spec.description   = %q{Listen to your Rails ActiveSupport::Notifications and deliver to a Statsd compatible backend}
   spec.homepage      = "https://github.com/localshred/nsa"
+  spec.licenses      = ["MIT"]
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
@@ -19,13 +20,13 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "activesupport", "< 6", ">= 4.2"
-  spec.add_dependency "concurrent-ruby", "~> 1.0.0"
-  spec.add_dependency "sidekiq", ">= 3.5.0"
-  spec.add_dependency "statsd-ruby", "~> 1.4.0"
+  spec.add_dependency "concurrent-ruby", "~> 1.0", ">= 1.0.2"
+  spec.add_dependency "sidekiq", "~> 3.5", ">= 3.5.0"
+  spec.add_dependency "statsd-ruby", "~> 1.4", ">= 1.4.0"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "minitest"
-  spec.add_development_dependency "mocha"
-  spec.add_development_dependency "byebug"
+  spec.add_development_dependency "minitest", "~> 5.0"
+  spec.add_development_dependency "mocha", "~> 1.5"
+  spec.add_development_dependency "byebug", "~> 10"
 end
