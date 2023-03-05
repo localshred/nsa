@@ -1,13 +1,12 @@
 require_relative "../../../test_helper"
 
 class ActiveSupportCacheTest < ::Minitest::Test
-
   def test_collect_cache_delete
     duration = 0.1
     event = {}
     expect_subscriber("cache_delete.active_support", event, duration)
 
-    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.delete.duration", duration * 1000)
+    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.delete.duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActiveSupportCache.collect("cache")
   end
 
@@ -16,7 +15,7 @@ class ActiveSupportCacheTest < ::Minitest::Test
     event = {}
     expect_subscriber("cache_exist?.active_support", event, duration)
 
-    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.exist?.duration", duration * 1000)
+    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.exist?.duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActiveSupportCache.collect("cache")
   end
 
@@ -25,7 +24,7 @@ class ActiveSupportCacheTest < ::Minitest::Test
     event = {}
     expect_subscriber("cache_fetch_hit.active_support", event, duration)
 
-    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.fetch_hit.duration", duration * 1000)
+    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.fetch_hit.duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActiveSupportCache.collect("cache")
   end
 
@@ -34,7 +33,7 @@ class ActiveSupportCacheTest < ::Minitest::Test
     event = {}
     expect_subscriber("cache_generate.active_support", event, duration)
 
-    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.generate.duration", duration * 1000)
+    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.generate.duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActiveSupportCache.collect("cache")
   end
 
@@ -43,7 +42,7 @@ class ActiveSupportCacheTest < ::Minitest::Test
     event = { :hit => true }
     expect_subscriber("cache_read.active_support", event, duration)
 
-    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.read_hit.duration", duration * 1000)
+    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.read_hit.duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActiveSupportCache.collect("cache")
   end
 
@@ -52,7 +51,7 @@ class ActiveSupportCacheTest < ::Minitest::Test
     event = { :hit => false }
     expect_subscriber("cache_read.active_support", event, duration)
 
-    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.read_miss.duration", duration * 1000)
+    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.read_miss.duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActiveSupportCache.collect("cache")
   end
 
@@ -61,7 +60,7 @@ class ActiveSupportCacheTest < ::Minitest::Test
     event = {}
     expect_subscriber("cache_write.active_support", event, duration)
 
-    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.write.duration", duration * 1000)
+    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.write.duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActiveSupportCache.collect("cache")
   end
 
@@ -70,7 +69,7 @@ class ActiveSupportCacheTest < ::Minitest::Test
     event = {}
     expect_subscriber("cache_some_other_key.active_support", event, duration)
 
-    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.some_other_key.duration", duration * 1000)
+    ::NSA::Collectors::ActiveSupportCache.expects(:statsd_timing).with("cache.some_other_key.duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActiveSupportCache.collect("cache")
   end
 
