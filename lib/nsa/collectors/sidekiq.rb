@@ -25,7 +25,7 @@ module NSA
       end
 
       def call(worker, message, queue_name)
-        worker_name = worker.class.name.tr("::", ".")
+        worker_name = worker.class.name.gsub("::", ".")
 
         statsd_time(make_key(worker_name, :processing_time)) do
           yield
