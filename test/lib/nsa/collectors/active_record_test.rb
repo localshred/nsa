@@ -7,7 +7,7 @@ class ActiveRecordTest < ::Minitest::Test
     event = { :sql => %q{DELETE FROM "users" WHERE "users".id = 1} }
     expect_subscriber(event, duration)
 
-    ::NSA::Collectors::ActiveRecord.expects(:statsd_timing).with("db.tables.users.queries.delete.duration", duration * 1000)
+    ::NSA::Collectors::ActiveRecord.expects(:statsd_timing).with("db.tables.users.queries.delete.duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActiveRecord.collect("db")
   end
 
@@ -16,7 +16,7 @@ class ActiveRecordTest < ::Minitest::Test
     event = { :sql => %q{INSERT INTO "users" ("id", "name") VALUES (1, 'Bob')} }
     expect_subscriber(event, duration)
 
-    ::NSA::Collectors::ActiveRecord.expects(:statsd_timing).with("db.tables.users.queries.insert.duration", duration * 1000)
+    ::NSA::Collectors::ActiveRecord.expects(:statsd_timing).with("db.tables.users.queries.insert.duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActiveRecord.collect("db")
   end
 
@@ -25,7 +25,7 @@ class ActiveRecordTest < ::Minitest::Test
     event = { :sql => %q{SELECT "users".id, "users".name FROM "users"} }
     expect_subscriber(event, duration)
 
-    ::NSA::Collectors::ActiveRecord.expects(:statsd_timing).with("db.tables.users.queries.select.duration", duration * 1000)
+    ::NSA::Collectors::ActiveRecord.expects(:statsd_timing).with("db.tables.users.queries.select.duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActiveRecord.collect("db")
   end
 
@@ -43,7 +43,7 @@ class ActiveRecordTest < ::Minitest::Test
     event = { :sql => query }
     expect_subscriber(event, duration)
 
-    ::NSA::Collectors::ActiveRecord.expects(:statsd_timing).with("db.tables.users.queries.select.duration", duration * 1000)
+    ::NSA::Collectors::ActiveRecord.expects(:statsd_timing).with("db.tables.users.queries.select.duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActiveRecord.collect("db")
   end
 
@@ -52,7 +52,7 @@ class ActiveRecordTest < ::Minitest::Test
     event = { :sql => %q{UPDATE "users" SET "users".name = 'Joe' WHERE "users".id = 1} }
     expect_subscriber(event, duration)
 
-    ::NSA::Collectors::ActiveRecord.expects(:statsd_timing).with("db.tables.users.queries.update.duration", duration * 1000)
+    ::NSA::Collectors::ActiveRecord.expects(:statsd_timing).with("db.tables.users.queries.update.duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActiveRecord.collect("db")
   end
 

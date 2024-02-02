@@ -12,7 +12,7 @@ class ActionControllerTest < ::Minitest::Test
               :view_runtime => 100 }
     expect_subscriber(event, duration)
 
-    ::NSA::Collectors::ActionController.expects(:statsd_timing).with("web.UsersController.index.html.total_duration", duration * 1000)
+    ::NSA::Collectors::ActionController.expects(:statsd_timing).with("web.UsersController.index.html.total_duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActionController.expects(:statsd_timing).with("web.UsersController.index.html.db_time", event[:db_runtime])
     ::NSA::Collectors::ActionController.expects(:statsd_timing).with("web.UsersController.index.html.view_time", event[:view_runtime])
     ::NSA::Collectors::ActionController.expects(:statsd_increment).with("web.UsersController.index.html.status.#{event[:status]}")
@@ -29,7 +29,7 @@ class ActionControllerTest < ::Minitest::Test
               :view_runtime => 100 }
     expect_subscriber(event, duration)
 
-    ::NSA::Collectors::ActionController.expects(:statsd_timing).with("web.UsersController.index.all.total_duration", duration * 1000)
+    ::NSA::Collectors::ActionController.expects(:statsd_timing).with("web.UsersController.index.all.total_duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActionController.expects(:statsd_timing).with("web.UsersController.index.all.db_time", event[:db_runtime])
     ::NSA::Collectors::ActionController.expects(:statsd_timing).with("web.UsersController.index.all.view_time", event[:view_runtime])
     ::NSA::Collectors::ActionController.expects(:statsd_increment).with("web.UsersController.index.all.status.#{event[:status]}")
@@ -46,7 +46,7 @@ class ActionControllerTest < ::Minitest::Test
               :view_runtime => 100 }
     expect_subscriber(event, duration)
 
-    ::NSA::Collectors::ActionController.expects(:statsd_timing).with("web.UsersController.index.all.total_duration", duration * 1000)
+    ::NSA::Collectors::ActionController.expects(:statsd_timing).with("web.UsersController.index.all.total_duration", in_delta(duration * 1000))
     ::NSA::Collectors::ActionController.expects(:statsd_timing).with("web.UsersController.index.all.db_time", event[:db_runtime])
     ::NSA::Collectors::ActionController.expects(:statsd_timing).with("web.UsersController.index.all.view_time", event[:view_runtime])
     ::NSA::Collectors::ActionController.expects(:statsd_increment).with("web.UsersController.index.all.status.#{event[:status]}")
