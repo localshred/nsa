@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "activesupport", "< 7.2", ">= 4.2"
+  spec.add_dependency "activesupport", "<= 7.2", ">= 4.2"
   spec.add_dependency "concurrent-ruby", "~> 1.0", ">= 1.0.2"
   spec.add_dependency "sidekiq", ">= 3.5"
   spec.add_dependency "statsd-ruby", "~> 1.4", ">= 1.4.0"
